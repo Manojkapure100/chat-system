@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ephemeral Chat System</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <h1>Ephemeral Chat</h1>
+      <p>No login, no persistence. Your chat clears when the connection closes.</p>
+    </header>
+
+    <main>
+      <section id="landing" class="screen active">
+        <div class="card">
+          <p>Your ID:</p>
+          <div id="assignedId" class="identity">—</div>
+          <label for="peerId">Enter peer ID</label>
+          <input id="peerId" placeholder="ABCDE" maxlength="5" />
+          <button id="connectBtn">Connect</button>
+          <div id="landingMessage" class="message"></div>
+        </div>
+      </section>
+
+      <section id="waiting" class="screen">
+        <div class="card">
+          <p>Waiting for peer...</p>
+          <div id="waitingStatus" class="status"></div>
+          <button id="cancelWaitBtn">Cancel</button>
+        </div>
+      </section>
+
+      <section id="chat" class="screen">
+        <div class="chat-header">
+          <div>
+            <span class="label">You</span>
+            <span id="myId" class="identity"></span>
+          </div>
+          <div>
+            <span class="label">Peer</span>
+            <span id="peerIdLabel" class="identity"></span>
+          </div>
+        </div>
+        <div id="messageList" class="message-list"></div>
+        <form id="chatForm" class="chat-form">
+          <input id="messageInput" type="text" placeholder="Type a message..." autocomplete="off" />
+          <button type="submit">Send</button>
+        </form>
+        <div class="file-row">
+          <input id="fileInput" type="file" accept="image/*" />
+          <button id="uploadBtn" type="button">Upload Image</button>
+        </div>
+        <button id="leaveBtn" class="secondary">Leave Chat</button>
+        <div id="chatStatus" class="message"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
