@@ -3,7 +3,10 @@
 //   : `${window.location.protocol}//${window.location.host}`;
 
 // const wsUrl = apiOrigin.replace(/^http/, 'ws') + '/api/v1/chat/ws';
-const wsUrl = "ws://127.0.0.1:8000/api/v1/chat/ws";
+
+// const wsUrl = "ws://127.0.0.1:8000/api/v1/chat/ws";
+const wsUrl = "ws://manojbackend.duckdns.org/api/v1/chat/ws"
+
 const assignedIdEl = document.getElementById('assignedId');
 const myIdEl = document.getElementById('myId');
 const peerIdLabelEl = document.getElementById('peerIdLabel');
@@ -19,6 +22,8 @@ const messageInput = document.getElementById('messageInput');
 const fileInput = document.getElementById('fileInput');
 const uploadBtn = document.getElementById('uploadBtn');
 const peerIdInput = document.getElementById('peerId');
+const copyIdBtn = document.getElementById('copyIdBtn');
+const copyMyIdBtn = document.getElementById('copyMyIdBtn');
 const waitingStatus = document.getElementById('waitingStatus');
 const landingMessage = document.getElementById('landingMessage');
 const chatStatus = document.getElementById('chatStatus');
@@ -60,6 +65,28 @@ function showLandingMessage(text) {
 
 function showChatStatus(text) {
   chatStatus.textContent = text;
+}
+
+function showCopyStatus(text) {
+  if (chatScreen.classList.contains('active')) {
+    showChatStatus(text);
+    return;
+  }
+  showLandingMessage(text);
+}
+
+async function copyUserId() {
+  if (!userId) {
+    showCopyStatus('Your ID is not assigned yet.');
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(userId);
+    showCopyStatus('Your ID was copied to clipboard.');
+  } catch (error) {
+    showCopyStatus('Unable to copy automatically. Please copy manually.');
+  }
 }
 
 async function connectWebSocket() {
@@ -196,6 +223,9 @@ cancelWaitBtn.addEventListener('click', () => {
   switchScreen(landingScreen);
   showLandingMessage('Pair request canceled.');
 });
+
+copyIdBtn?.addEventListener('click', copyUserId);
+copyMyIdBtn?.addEventListener('click', copyUserId);
 
 chatForm.addEventListener('submit', (event) => {
   event.preventDefault();

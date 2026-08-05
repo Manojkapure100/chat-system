@@ -5,22 +5,24 @@
 body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #111827;
+  background: radial-gradient(circle at top, rgba(124, 58, 237, 0.18), transparent 35%),
+    linear-gradient(180deg, #0f172a 0%, #111827 100%);
   color: #f8fafc;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 16px;
 }
 
 .app-shell {
-  width: min(540px, 100%);
-  padding: 24px;
+  width: min(640px, 100%);
+  padding: 18px 16px 24px;
 }
 
 header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 header h1 {
@@ -36,9 +38,31 @@ header p {
 .card {
   background: #1f2937;
   border: 1px solid #374151;
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.15);
+  border-radius: 22px;
+  padding: 26px 22px 24px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+}
+
+.section-title {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.section-copy {
+  margin: 0 0 18px;
+  color: #cbd5e1;
+  line-height: 1.65;
+  font-size: 0.95rem;
+}
+
+.section-label {
+  display: block;
+  margin-bottom: 10px;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .identity {
@@ -59,6 +83,61 @@ button,
   width: 100%;
 }
 
+.identity-row,
+.identity-copy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.identity-row {
+  justify-content: flex-start;
+}
+
+.identity-row .identity {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.identity {
+  padding: 10px 14px;
+  font-size: 0.95rem;
+}
+
+.identity-block {
+  display: grid;
+  gap: 10px;
+}
+
+.inputPeerId {
+  height: 30px;
+  border-radius: 5px;
+}
+
+.copy-button {
+  width: auto;
+  min-width: 92px;
+  margin-top: auto;
+  background: #27272a;
+  border: 1px solid #4b5563;
+  color: #e2e8f0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.copy-button:hover,
+.copy-button:focus {
+  background: #4f46e5;
+  border-color: #7c3aed;
+  transform: translateY(-1px);
+}
+
 label {
   display: block;
   margin-top: 18px;
@@ -71,26 +150,34 @@ input[type="text"],
 input[type="file"] {
   width: 100%;
   border: 1px solid #334155;
-  border-radius: 14px;
-  padding: 12px 14px;
-  background: #0f172a;
-  color: #e2e8f0;
+  border-radius: 18px;
+  padding: 16px 18px;
+  min-height: 52px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #f8fafc;
   outline: none;
+  box-shadow: inset 0 1px 1px rgba(15, 23, 42, 0.4);
 }
 
 input[type="text"]:focus,
 input[type="file"]:focus {
-  border-color: #7c3aed;
+  border-color: #a78bfa;
+  box-shadow: inset 0 1px 2px rgba(124, 58, 237, 0.25);
+}
+
+input::placeholder {
+  color: #94a3b8;
 }
 
 button {
   border: none;
-  border-radius: 14px;
-  padding: 12px 16px;
+  border-radius: 16px;
+  padding: 14px 16px;
   background: #7c3aed;
   color: white;
   font-weight: 600;
   cursor: pointer;
+  margin-top: 16px;
 }
 
 button.secondary {
@@ -118,16 +205,18 @@ button:disabled {
 
 .chat-header {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-bottom: 18px;
 }
 
 .chat-form {
   display: grid;
-  grid-template-columns: 1fr auto;
   gap: 12px;
   margin-top: 18px;
+}
+
+.chat-form button {
+  width: 100%;
 }
 
 .message-list {
@@ -167,13 +256,20 @@ button:disabled {
 
 .file-row {
   display: grid;
-  grid-template-columns: 1fr auto;
   gap: 12px;
   margin-top: 18px;
 }
 
-@media (max-width: 540px) {
+@media (min-width: 640px) {
   .chat-header {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .chat-form {
+    grid-template-columns: 1fr auto;
+  }
+
+  .file-row {
+    grid-template-columns: 1fr auto;
   }
 }

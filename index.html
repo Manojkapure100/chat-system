@@ -16,10 +16,15 @@
     <main>
       <section id="landing" class="screen active">
         <div class="card">
-          <p>Your ID:</p>
-          <div id="assignedId" class="identity">—</div>
+          <p class="section-title">Connect with a peer</p>
+          <p class="section-copy">Share your ID or paste your friend's 5-character code to start the chat instantly.</p>
+          <div class="section-label">Your ID</div>
+          <div class="identity-row">
+            <div id="assignedId" class="identity">—</div>
+            <button id="copyIdBtn" class="copy-button" type="button">Copy</button>
+          </div>
           <label for="peerId">Enter peer ID</label>
-          <input id="peerId" placeholder="ABCDE" maxlength="5" />
+          <input id="peerId" class="inputPeerId" placeholder="ABCDE" maxlength="5" />
           <button id="connectBtn">Connect</button>
           <div id="landingMessage" class="message"></div>
         </div>
@@ -35,11 +40,14 @@
 
       <section id="chat" class="screen">
         <div class="chat-header">
-          <div>
+          <div class="identity-block">
             <span class="label">You</span>
-            <span id="myId" class="identity"></span>
+            <div class="identity-row">
+              <span id="myId" class="identity"></span>
+              <button id="copyMyIdBtn" class="copy-button" type="button">Copy</button>
+            </div>
           </div>
-          <div>
+          <div class="identity-block">
             <span class="label">Peer</span>
             <span id="peerIdLabel" class="identity"></span>
           </div>
