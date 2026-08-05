@@ -5,7 +5,7 @@
 // const wsUrl = apiOrigin.replace(/^http/, 'ws') + '/api/v1/chat/ws';
 
 // const wsUrl = "ws://127.0.0.1:8000/api/v1/chat/ws";
-const wsUrl = "ws://manojbackend.duckdns.org/api/v1/chat/ws"
+const wsUrl = "wss://manojbackend.duckdns.org/api/v1/chat/ws"
 
 const assignedIdEl = document.getElementById('assignedId');
 const myIdEl = document.getElementById('myId');
