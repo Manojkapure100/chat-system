@@ -382,18 +382,17 @@ main {
   .chat-form {
     margin: 0;
     position: sticky;
-    bottom: 16px;
+    bottom: 10px;
     grid-template-columns: 8fr 1fr 1fr;
     gap: 8px;
     align-items: center;
-    min-width: 80vw;
     padding: 8px;
     background: linear-gradient(180deg, rgba(17,24,39,0.92), rgba(17,24,39,0.92));
     z-index: 30;
   }
 
   .message-list {
-    padding-bottom: 0;
+    padding-bottom: 100px;
   }
 
   .button-text {
