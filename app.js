@@ -4,8 +4,17 @@
 
 // const wsUrl = apiOrigin.replace(/^http/, 'ws') + '/api/v1/chat/ws';
 
-// const wsUrl = "ws://127.0.0.1:8000/api/v1/chat/ws";
-const wsUrl = "wss://manojbackend.duckdns.org/api/v1/chat/ws"
+const wsUrl = "ws://127.0.0.1:8000/api/v1/chat/ws";
+// const wsUrl = "wss://manojbackend.duckdns.org/api/v1/chat/ws"
+
+// Derive API origin from websocket URL for uploads
+const apiOrigin = (() => {
+  try {
+    return new URL(wsUrl.replace(/^ws/, 'http')).origin;
+  } catch (e) {
+    return window.location.origin;
+  }
+})();
 
 const assignedIdEl = document.getElementById('assignedId');
 const myIdEl = document.getElementById('myId');
@@ -155,7 +164,10 @@ function handleWebSocketMessage(data) {
       sessionId = data.sessionId;
       peerIdLabelEl.textContent = peerId;
       switchScreen(chatScreen);
-      showChatStatus('Chat connected. Send a message or upload an image.');
+      // showChatStatus('Chat connected. Send a message or upload an image.');
+      // hide copy button once chat starts
+      const copyBtn = document.getElementById('copyMyIdBtn');
+      if (copyBtn) copyBtn.style.display = 'none';
       return;
     }
 
@@ -174,6 +186,9 @@ function handleWebSocketMessage(data) {
     if (data.status === 'waiting') {
       switchScreen(waitingScreen);
       waitingStatus.textContent = data.message || 'Waiting for the peer to join.';
+      // ensure copy button visible while waiting/landing
+      const copyBtn = document.getElementById('copyMyIdBtn');
+      if (copyBtn) copyBtn.style.display = '';
       return;
     }
   }
@@ -193,12 +208,50 @@ function handleWebSocketMessage(data) {
   if (type === 'peer_left') {
     showChatStatus(data.message || 'Peer left the chat.');
     switchScreen(landingScreen);
+    const copyBtn = document.getElementById('copyMyIdBtn');
+    if (copyBtn) copyBtn.style.display = '';
     return;
   }
 
   if (type === 'error') {
     showChatStatus(data.message || 'Unexpected error received.');
     return;
+  }
+}
+
+// Upload helper (used for auto-upload on file selection)
+async function uploadSelectedFile(file) {
+  if (!file) {
+    showChatStatus('Choose an image before uploading.');
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    showChatStatus('File must be 5MB or smaller.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('sender_id', userId);
+  formData.append('session_id', sessionId);
+
+  try {
+    const response = await fetch(`${apiOrigin}/api/v1/chat/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      showChatStatus(json.detail || json.body?.error || 'Upload failed.');
+      return;
+    }
+
+    renderMessage(`You uploaded ${json.body.filename}`, true, json.body.url);
+    showChatStatus('Image uploaded successfully. Your peer will receive a notification.');
+    fileInput.value = '';
+  } catch (error) {
+    showChatStatus('Upload failed. Check your backend connection.');
   }
 }
 
@@ -238,40 +291,15 @@ chatForm.addEventListener('submit', (event) => {
     messageInput.value = '';
 });
 
-uploadBtn.addEventListener('click', async () => {
-  const file = fileInput.files[0];
-  if (!file) {
-    showChatStatus('Choose an image before uploading.');
-    return;
-  }
+// Open file selector when upload button clicked
+uploadBtn.addEventListener('click', () => {
+  if (fileInput) fileInput.click();
+});
 
-  if (file.size > 5 * 1024 * 1024) {
-    showChatStatus('File must be 5MB or smaller.');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('sender_id', userId);
-  formData.append('session_id', sessionId);
-
-  try {
-    const response = await fetch(`${apiOrigin}/api/v1/chat/upload`, {
-      method: 'POST',
-      body: formData,
-    });
-    const json = await response.json();
-    if (!response.ok) {
-      showChatStatus(json.detail || json.body?.error || 'Upload failed.');
-      return;
-    }
-
-    renderMessage(`You uploaded ${json.body.filename}`, true, json.body.url);
-    showChatStatus('Image uploaded successfully. Your peer will receive a notification.');
-    fileInput.value = '';
-  } catch (error) {
-    showChatStatus('Upload failed. Check your backend connection.');
-  }
+// Auto upload when file selected
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) uploadSelectedFile(file);
 });
 
 leaveBtn.addEventListener('click', () => {
@@ -283,6 +311,9 @@ leaveBtn.addEventListener('click', () => {
     websocket.close();
   }
   switchScreen(landingScreen);
+  // restore copy button visibility when leaving
+  const copyBtn = document.getElementById('copyMyIdBtn');
+  if (copyBtn) copyBtn.style.display = '';
   showLandingMessage('You left the chat. Refresh to start another session.');
 });
 

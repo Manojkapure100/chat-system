@@ -190,11 +190,20 @@ button:disabled {
 }
 
 .screen {
-  display: none;
+  display: none !important;
+  min-height: 0;
 }
 
 .screen.active {
-  display: block;
+  display: flex !important;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+main > .screen {
+  width: 100%;
 }
 
 .status,
@@ -217,6 +226,7 @@ button:disabled {
 
 .chat-form button {
   width: 100%;
+  margin-top: 0;
 }
 
 .message-list {
@@ -273,3 +283,147 @@ button:disabled {
     grid-template-columns: 1fr auto;
   }
 }
+
+/* Mobile / app-fit layout: keep everything inside viewport, no body scroll. */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.app-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* make container a positioning context for bottom-sticky form */
+.app-shell {
+  position: relative;
+}
+
+main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Make the chat section stretch so message list fills available space
+   between the header and the bottom-sticky controls */
+#chat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chat-header .header-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.leave-button {
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+.message-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  overflow: auto;
+  max-height: none;
+  padding-bottom: 0;
+}
+
+.chat-form {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.chat-form input[type="text"] {
+  min-width: 0;
+}
+
+.icon-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+.icon-button svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.button-text {
+  display: inline;
+}
+
+/* Mobile: pin chat controls to bottom of the app shell */
+@media (max-width: 639px) {
+  .chat-form {
+    margin: 0;
+    position: sticky;
+    bottom: 16px;
+    grid-template-columns: 8fr 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+    margin: 0 16px 16px;
+    padding: 8px;
+    background: linear-gradient(180deg, rgba(17,24,39,0.92), rgba(17,24,39,0.92));
+    border-radius: 12px;
+    border: 1px solid rgba(67,56,202,0.08);
+    z-index: 30;
+  }
+
+  .message-list {
+    padding-bottom: 0;
+  }
+
+  .button-text {
+    display: none;
+  }
+
+  .icon-button {
+    padding: 0;
+    aspect-ratio: 1 / 1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .icon-button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .chat-form button {
+    padding: 0;
+  }
+}
+
+/* Slightly smaller input height on mobile to fit */
+input[type="text"] {
+  min-height: 44px;
+  padding: 12px 14px;
+}
+
+/* Ensure no horizontal overflow */
+* { max-width: 100%; box-sizing: border-box; }

@@ -40,28 +40,41 @@
 
       <section id="chat" class="screen">
         <div class="chat-header">
-          <div class="identity-block">
-            <span class="label">You</span>
-            <div class="identity-row">
-              <span id="myId" class="identity"></span>
-              <button id="copyMyIdBtn" class="copy-button" type="button">Copy</button>
+          <div class="identity-row header-left">
+            <div class="identity-block">
+              <span class="label">You</span>
+              <div class="identity-row">
+                <span id="myId" class="identity"></span>
+                <button id="copyMyIdBtn" class="copy-button" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="identity-block">
+              <span class="label">Peer</span>
+              <span id="peerIdLabel" class="identity"></span>
             </div>
           </div>
-          <div class="identity-block">
-            <span class="label">Peer</span>
-            <span id="peerIdLabel" class="identity"></span>
-          </div>
+          <button id="leaveBtn" class="secondary leave-button">Disconnect</button>
         </div>
         <div id="messageList" class="message-list"></div>
         <form id="chatForm" class="chat-form">
           <input id="messageInput" type="text" placeholder="Type a message..." autocomplete="off" />
-          <button type="submit">Send</button>
+          <input id="fileInput" type="file" accept="image/*" style="display:none" />
+          <button id="uploadBtn" type="button" class="copy-button icon-button" aria-label="Upload image">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v12" />
+              <path d="M8 7l4-4 4 4" />
+              <path d="M5 19h14" />
+            </svg>
+            <span class="button-text">Upload</span>
+          </button>
+          <button type="submit" class="icon-button" aria-label="Send message">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 2L11 13" />
+              <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+            </svg>
+            <span class="button-text">Send</span>
+          </button>
         </form>
-        <div class="file-row">
-          <input id="fileInput" type="file" accept="image/*" />
-          <button id="uploadBtn" type="button">Upload Image</button>
-        </div>
-        <button id="leaveBtn" class="secondary">Leave Chat</button>
         <div id="chatStatus" class="message"></div>
       </section>
     </main>
