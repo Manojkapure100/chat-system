@@ -386,11 +386,9 @@ main {
     grid-template-columns: 8fr 1fr 1fr;
     gap: 8px;
     align-items: center;
-    margin: 0 16px 16px;
+    min-width: 80vw;
     padding: 8px;
     background: linear-gradient(180deg, rgba(17,24,39,0.92), rgba(17,24,39,0.92));
-    border-radius: 12px;
-    border: 1px solid rgba(67,56,202,0.08);
     z-index: 30;
   }
 
